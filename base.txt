@@ -1,0 +1,124 @@
+
+USE whoami_dlamebloplus;
+
+CREATE TABLE users (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+    username VARCHAR(30) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    name VARCHAR(15) NOT NULL,
+    surname VARCHAR(30) NOT NULL,
+    birthday DATE NOT NULL,
+    rank VARCHAR(100) NOT NULL,
+    created TIMESTAMP NOT NULL
+);
+
+CREATE TABLE authors (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+    name VARCHAR(15) NOT NULL,
+    surname VARCHAR(30) NOT NULL,
+    birthday DATE NOT NULL
+);
+
+CREATE TABLE books (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+    title VARCHAR(50) NOT NULL,
+    author INT(11) NOT NULL,
+    publisher VARCHAR(30) NOT NULL,
+    published YEAR NOT NULL,
+    quantity INT(11) NOT NULL,
+    descr VARCHAR(300) NOT NULL,
+	FOREIGN KEY (author) REFERENCES authors(id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+CREATE TABLE borrowed (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+    client INT(11) NOT NULL,
+    book INT(11) NOT NULL,
+	start DATE NOT NULL,
+	ended DATE NULL,
+	FOREIGN KEY (client) REFERENCES users(id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	FOREIGN KEY (book) REFERENCES books(id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+CREATE TABLE rates (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+    client INT(11) NOT NULL,
+    book INT(11) NOT NULL,
+	rate INT(1) NOT NULL,
+	FOREIGN KEY (client) REFERENCES users(id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	FOREIGN KEY (book) REFERENCES books(id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);
+
+INSERT INTO users VALUES('NULL', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Bartosz', 'Wasiak', '2000-12-19', 'Administrator', NOW());
+INSERT INTO users VALUES('NULL', 'user1', '24c9e15e52afc47c225b757e7bee1f9d', 'Jan', 'Kowalski', '2005-06-12', 'Czytelnik', NOW());
+INSERT INTO users VALUES('NULL', 'user2', '7e58d63b60197ceb55a1c487989a3720', 'Lukasz', 'Opilka', '2005-06-12', 'Czytelnik', NOW());
+INSERT INTO users VALUES('NULL', 'user3', '92877af70a45fd6a2ed7fe81e1236b78', 'Wojciech', 'Zawadzki', '2005-06-12', 'Czytelnik', NOW());
+INSERT INTO users VALUES('NULL', 'user4', '3f02ebe3d7929b091e3d8ccfde2f3bc6', 'Filip', 'Marcinek', '2005-06-12', 'Czytelnik', NOW());
+INSERT INTO users VALUES('NULL', 'user5', '0a791842f52a0acfbb3a783378c066b8', 'Patryk', 'Bobrek', '1996-06-12', 'Czytelnik', NOW());
+
+INSERT INTO authors VALUES (NULL, 'H.P.', 'Lovecraft', '1890-08-20');
+INSERT INTO authors VALUES (NULL, 'Stephen', 'King', '1947-09-21');
+INSERT INTO authors VALUES (NULL, 'Thomas', 'Harris', '1940-09-22');
+INSERT INTO authors VALUES (NULL, 'J. K.', 'Rowling', '1965-07-31');
+INSERT INTO authors VALUES (NULL, 'Bram', 'Stoker', '1847-11-08');
+
+INSERT INTO books VALUES (NULL, 'The Call of Cthulhu', '1', 'C&T', '1928', '8', 'Wybor najlepszych z najlepszych opowiesci grozy H.P. Lovecrafta z legendarnym wstepem "Cien z Providence" Marka Wydmucha i ilustracjami Antoniego Sobeckiego.');
+INSERT INTO books VALUES (NULL, 'At the Mountains of Madness', '1', 'C&T', '1936', '3', 'Powiesc "W gorach szalenstwa" Lovecraft napisał w 1931 roku i zgodnie uznawana jest za najambitniejsza w jego dorobku literackim.');
+INSERT INTO books VALUES (NULL, 'The Shining', '2', 'Proszynski', '1977', '1', 'To jeden z najlepszych wspolczesnych horrorow. Nastroj grozy i napiecia poteguje sie w niej z kazda minuta. Piecioletni chlopiec Danny znalazl sie z rodzicami w opustoszalym na zimie hotelu. Wrazliwe, obdarzone zdolnosciami wizjonerskimi dziecko odbiera fluidy czajace sie w jego murach byly one swiadkami krwawych porachunkow swiata przestepczego i milionerow. Straszliwe zdarzenia, ktore koncza fabule, sa jednak niczym w porownaniu z przejsciami psychicznymi bohaterow.');
+INSERT INTO books VALUES (NULL, 'It', '2', 'Albatros', '1993', '0', 'Najbardziej przerazajaca powiesc krola grozy. Doceniona przez miliony czytelnikow na calym swiecie. Ciebie tez porwie.');
+INSERT INTO books VALUES (NULL, 'Silence of the Lambs', '3', 'Sonia Draga', '1988', '4', 'Clarice Starling rozpoczyna staz w Sekcji Behawioralnej FBI, zajmujacej sie seryjnymi mordercami. Jej pierwszym zadaniem jest spotkanie z przybywajacym w szpitalu dla umyslowo chorych wielokrotnym morderca i kanibalem, z zawodu psychiatra - doktorem Hannibalem Lecterem.');
+INSERT INTO books VALUES (NULL, 'Hannibal', '3', 'Sonia Draga', '1999', '12', 'Potezny, hipnotyczny, calkowicie oryginalny Hannibal to uczta dla wyobrazni. Przygotuj sie na podroz do piekla...');
+INSERT INTO books VALUES (NULL, 'Harry Potter and the Sorcerer''s Stone', '4', 'Media Rodzina', '2007', '3', 'Edycja specjalna z okazji dwudziestolecia wydania ksiazki Harry Potter i Kamien Filozoficzny - pozycja obowiazkowa dla najwierniejszych fanow Hogwartu!');
+INSERT INTO books VALUES (NULL, 'Harry Potter and the Chamber of Secrets', '4', 'Media Rodzina', '1998', '1', 'Edycja specjalna z okazji dwudziestolecia wydania ksiazki Harry Potter i Komnata Tajemnic - pozycja obowiazkowa dla najwierniejszych fanow Hogwartu!');
+INSERT INTO books VALUES (NULL, 'Dracula', '5', 'Vesper', '1997', '32', 'Jonathan Harker, mlody, naiwny prawnik, wyrusza w podroz do Transylwanii na spotkanie z hrabia Dracula, ktory przymierza sie do przyjazdu do Anglii.');
+INSERT INTO books VALUES (NULL, 'The Snake''s Pass', '5', '???', '1990', '20', 'Brak opisu...');
+
+INSERT INTO borrowed VALUES (NULL, '1', '1', '2020-09-18', '2020-10-10');
+INSERT INTO borrowed VALUES (NULL, '1', '3', '2020-10-10', '2020-10-28');
+INSERT INTO borrowed VALUES (NULL, '1', '5', '2020-10-28', NULL);
+INSERT INTO borrowed VALUES (NULL, '2', '1', '2020-07-10', '2020-08-30');
+INSERT INTO borrowed VALUES (NULL, '2', '6', '2020-09-18', '2020-10-30');
+INSERT INTO borrowed VALUES (NULL, '2', '10', '2020-10-30', NULL);
+INSERT INTO borrowed VALUES (NULL, '3', '3', '2020-05-15', '2020-06-21');
+INSERT INTO borrowed VALUES (NULL, '3', '5', '2020-08-01', '2020-09-12');
+INSERT INTO borrowed VALUES (NULL, '3', '6', '2020-09-27', NULL);
+INSERT INTO borrowed VALUES (NULL, '4', '1', '2020-03-12', '2020-04-21');
+INSERT INTO borrowed VALUES (NULL, '4', '2', '2020-04-21', '2020-05-26');
+INSERT INTO borrowed VALUES (NULL, '4', '3', '2020-05-26', '2020-07-01');
+INSERT INTO borrowed VALUES (NULL, '4', '4', '2020-10-31', NULL);
+INSERT INTO borrowed VALUES (NULL, '5', '3', '2020-08-23', '2020-09-17');
+INSERT INTO borrowed VALUES (NULL, '5', '5', '2020-09-17', '2020-10-28');
+INSERT INTO borrowed VALUES (NULL, '5', '7', '2020-10-28', NULL);
+INSERT INTO borrowed VALUES (NULL, '6', '7', '2020-10-14', '2020-11-01');
+INSERT INTO borrowed VALUES (NULL, '6', '8', '2020-11-01', NULL);
+
+INSERT INTO rates VALUES (NULL, '1', '10', '5');
+INSERT INTO rates VALUES (NULL, '6', '6', '4');
+INSERT INTO rates VALUES (NULL, '2', '7', '2');
+INSERT INTO rates VALUES (NULL, '3', '4', '3');
+INSERT INTO rates VALUES (NULL, '4', '8', '1');
+INSERT INTO rates VALUES (NULL, '5', '2', '4');
+INSERT INTO rates VALUES (NULL, '5', '9', '2');
+INSERT INTO rates VALUES (NULL, '6', '1', '3');
+INSERT INTO rates VALUES (NULL, '1', '5', '5');
+INSERT INTO rates VALUES (NULL, '2', '8', '4');
+INSERT INTO rates VALUES (NULL, '6', '9', '5');
+INSERT INTO rates VALUES (NULL, '5', '1', '5');
+INSERT INTO rates VALUES (NULL, '2', '3', '1');
+INSERT INTO rates VALUES (NULL, '4', '10', '5');
+INSERT INTO rates VALUES (NULL, '4', '7', '4');
+INSERT INTO rates VALUES (NULL, '4', '3', '3');
+INSERT INTO rates VALUES (NULL, '2', '10', '5');
+INSERT INTO rates VALUES (NULL, '2', '4', '1');
+INSERT INTO rates VALUES (NULL, '2', '1', '2');
+INSERT INTO rates VALUES (NULL, '6', '10', '5');
